@@ -1,89 +1,24 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { MessageList } from "./components/MessageList";
+import { LanguageSelector } from "./components/LanguageSelector";
+import { useTranslation } from "./hooks/useTranslation";
+import { Input } from "./components/ui/input";
+import { Button } from "./components/ui/button";
 
 export default function App() {
-  const [messages, setMessages] = useState([]);
-  const [inputMessage, setInputMessage] = useState("");
-  const [selectedLanguage, setSelectedLanguage] = useState("es");
-  const [translator, setTranslator] = useState(null);
-  const [detector, setDetector] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const initializeAPIs = async () => {
-      try {
-        // Check if APIs are supported
-        if (!('ai' in self && 'translator' in self.ai && 'languageDetector' in self.ai)) {
-          throw new Error('Translation APIs are not supported in this browser');
-        }
-
-        // Initialize language detector
-        const detectorCapabilities = await self.ai.languageDetector.capabilities();
-        if (detectorCapabilities.available === 'no') {
-          throw new Error('Language detection is not available');
-        }
-
-        const newDetector = await self.ai.languageDetector.create({
-          monitor(m) {
-            m.addEventListener('downloadprogress', (e) => {
-              console.log(`Detector: Downloaded ${e.loaded} of ${e.total} bytes.`);
-            });
-          },
-        });
-        await newDetector.ready;
-        setDetector(newDetector);
-
-        // Initialize translator
-        const translatorCapabilities = await self.ai.translator.capabilities();
-        if (!translatorCapabilities.languagePairAvailable('en', selectedLanguage)) {
-          throw new Error(`Translation to ${selectedLanguage} is not available`);
-        }
-
-        const newTranslator = await self.ai.translator.create({
-          sourceLanguage: 'en',
-          targetLanguage: selectedLanguage,
-          monitor(m) {
-            m.addEventListener('downloadprogress', (e) => {
-              console.log(`Translator: Downloaded ${e.loaded} of ${e.total} bytes.`);
-            });
-          },
-        });
-        await newTranslator.ready;
-        setTranslator(newTranslator);
-        setIsLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setIsLoading(false);
-      }
-    };
-
-    initializeAPIs();
-  }, [selectedLanguage]);
+  const [messages, setMessages] = React.useState([]);
+  const [inputMessage, setInputMessage] = React.useState("");
+  const [selectedLanguage, setSelectedLanguage] = React.useState("en");
+  const { isLoading, error, translateText } = useTranslation(selectedLanguage);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!inputMessage.trim() || !detector || !translator) return;
+    if (!inputMessage.trim()) return;
 
-    try {
-      // Detect language
-      const detectionResults = await detector.detect(inputMessage);
-      const [topResult] = detectionResults;
-      const detectedLanguage = topResult.detectedLanguage;
-
-      // Translate text
-      const translation = await translator.translate(inputMessage);
-
-      const newMessage = {
-        text: inputMessage,
-        detectedLanguage,
-        translation,
-      };
-
-      setMessages([...messages, newMessage]);
+    const result = await translateText(inputMessage);
+    if (result) {
+      setMessages([...messages, result]);
       setInputMessage("");
-    } catch (err) {
-      setError(err.message);
     }
   };
 
@@ -98,7 +33,7 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col">
       <header className="p-4 text-white text-xl font-bold">
-        AI-Powered Text Processing
+        {/* AI-Powered Text Processing */}
       </header>
 
       <main className="flex-1 p-4 max-w-3xl mx-auto w-full flex flex-col">
@@ -108,49 +43,25 @@ export default function App() {
           </div>
         ) : (
           <>
-            <div className="flex-1 space-y-4 mb-4">
-              {messages.map((message, index) => (
-                <div key={index} className="space-y-2">
-                  <div className="text-white">
-                    {message.text}
-                    <div className="text-sm text-gray-400">
-                      Detected language: {message.detectedLanguage}
-                    </div>
-                  </div>
-                  <div className="bg-gray-800 p-3 rounded-lg">
-                    <div className="text-gray-400 text-sm mb-1">Translation:</div>
-                    <div className="text-white">{message.translation}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
+            <MessageList messages={messages} />
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
               <div className="flex gap-2">
-                <select
-                  value={selectedLanguage}
-                  onChange={(e) => setSelectedLanguage(e.target.value)}
-                  className="bg-gray-800 text-white p-2 rounded-lg"
-                >
-                  <option value="es">Spanish</option>
-                  <option value="fr">French</option>
-                </select>
+                <LanguageSelector
+                  selectedLanguage={selectedLanguage}
+                  onLanguageChange={setSelectedLanguage}
+                />
               </div>
               <div className="flex gap-2">
-                <input
+                <Input
                   type="text"
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   placeholder="Type your message here..."
-                  className="flex-1 bg-gray-800 text-white p-3 rounded-lg"
+                  className="flex-1"
                 />
-                <button
-                  type="submit"
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-                  disabled={isLoading}
-                >
+                <Button type="submit" variant={"outline"} disabled={isLoading}>
                   Send
-                </button>
+                </Button>
               </div>
             </form>
           </>
