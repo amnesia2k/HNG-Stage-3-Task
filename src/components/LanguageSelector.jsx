@@ -10,8 +10,12 @@ import {
 
 export function LanguageSelector({ selectedLanguage, onLanguageChange }) {
   return (
-    <Select value={selectedLanguage} onValueChange={onLanguageChange}>
-      <SelectTrigger className="w-[180px]">
+    <Select
+      value={selectedLanguage}
+      onValueChange={onLanguageChange}
+      className=""
+    >
+      <SelectTrigger className="w-[180px] rounded-full">
         <SelectValue placeholder="Select language" />
       </SelectTrigger>
       <SelectContent>
