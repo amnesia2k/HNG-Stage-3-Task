@@ -14,13 +14,13 @@ export default function App() {
   const [currentPage, setCurrentPage] = React.useState("translator");
 
   return (
-    <div className="w-full max-w-3xl px-4 mx-auto min-h-screen flex flex-col">
-      <header className="p-4 flex flex-row justify-between items-center">
-        <h1 className="text-white text-xl font-bold">
+    <div className="w-full max-w-3xl px-3 lg:px-0 mx-auto min-h-screen flex flex-col">
+      <header className="py-4 flex flex-row justify-between items-center">
+        <h1 className="text-white text-lg md:text-2xl font-bold">
           LanGPT AI-Powered Text Processing
         </h1>
         <Select value={currentPage} onValueChange={setCurrentPage}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-[100px] md:w-[150px]">
             <SelectValue placeholder="Select page" />
           </SelectTrigger>
           <SelectContent>

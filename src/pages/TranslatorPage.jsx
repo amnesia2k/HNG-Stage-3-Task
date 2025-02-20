@@ -107,7 +107,7 @@ export function TranslatorPage() {
         <div className="flex-1 flex flex-col h-full">
           <div className="flex-1 overflow-y-auto">
             <div className="w-full max-w-3xl mx-auto">
-              <MessageList messages={messages} />
+              <MessageList messages={messages} type="translator" />
             </div>
           </div>
           <div className="w-full bg-[#1B1818] sticky bottom-0">

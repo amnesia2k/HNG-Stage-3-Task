@@ -107,13 +107,13 @@
 
   /* Scrollbar Track */
   ::-webkit-scrollbar-track {
-    background: var(--muted); /* Use your theme variable */
+    background: var(--muted-foreground); /* Use your theme variable */
     border-radius: var(--radius-md); /* Smooth corners */
   }
 
   /* Scrollbar Thumb */
   ::-webkit-scrollbar-thumb {
-    background: var(--primary); /* Thumb color */
+    background: var(--muted); /* Thumb color */
     border-radius: var(--radius-lg); /* Smooth corners */
   }
 }

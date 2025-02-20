@@ -15,11 +15,11 @@ export function LanguageSelector({ selectedLanguage, onLanguageChange }) {
       onValueChange={onLanguageChange}
       className=""
     >
-      <SelectTrigger className="w-[100px] rounded-full overflow-hidden truncate">
-        <SelectValue placeholder="Select language" className="truncate" />
+      <SelectTrigger className="w-[100px] rounded-full truncate">
+        <SelectValue placeholder="Select language" />
       </SelectTrigger>
       <SelectContent>
-        <SelectGroup className="truncate">
+        <SelectGroup>
           <SelectItem value="en">English</SelectItem>
           <SelectItem value="es">Spanish</SelectItem>
           <SelectItem value="fr">French</SelectItem>
