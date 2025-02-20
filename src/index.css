@@ -94,7 +94,26 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px; /* Adjust width */
+    border-radius: var(--radius-md); /* Use your defined radius */
+  }
+
+  /* Scrollbar Track */
+  ::-webkit-scrollbar-track {
+    background: var(--muted); /* Use your theme variable */
+    border-radius: var(--radius-md); /* Smooth corners */
+  }
+
+  /* Scrollbar Thumb */
+  ::-webkit-scrollbar-thumb {
+    background: var(--primary); /* Thumb color */
+    border-radius: var(--radius-lg); /* Smooth corners */
   }
 }

@@ -1,7 +1,18 @@
 import PropTypes from "prop-types";
 import { Loader } from "lucide-react";
+import * as React from "react";
 
 export function MessageList({ messages }) {
+  const messagesEndRef = React.useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  React.useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   if (!messages.length) {
     return null;
   }
@@ -17,7 +28,6 @@ export function MessageList({ messages }) {
                 {!message.detectedLanguage ? (
                   <div className="flex items-center gap-2">
                     <Loader className="h-4 w-4 animate-spin text-gray-400" />
-                    {/* <span>Detecting...</span> */}
                   </div>
                 ) : (
                   `(${message.detectedLanguage})`
@@ -43,6 +53,8 @@ export function MessageList({ messages }) {
           </div>
         </div>
       ))}
+
+      <div ref={messagesEndRef} />
     </div>
   );
 }
