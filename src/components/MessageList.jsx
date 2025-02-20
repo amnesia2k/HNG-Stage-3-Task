@@ -20,9 +20,9 @@ export function MessageList({ messages, type }) {
   return (
     <div className="flex-1 space-y-6 overflow-y-auto">
       {messages.map((message, index) => (
-        <div key={index} className="flex flex-col space-y-4">
+        <div key={index} className="flex flex-col gap-1 space-y-4">
           <div className="flex justify-end">
-            <div className="bg-[#303030] p-2 md:p-3 rounded-xl max-w-[80%] flex flex-col md:flex-row items-start md:items-center">
+            <div className="bg-[#303030] p-2 md:p-3 rounded-xl max-w-[80%] flex flex-col items-start md:items-center">
               <span className="text-white text-sm">{message.text}</span>
               <span className="text-gray-400 text-sm">
                 {type === "translator" &&
@@ -41,9 +41,7 @@ export function MessageList({ messages, type }) {
 
           <div className="flex justify-start">
             <div
-              className={`border p-2 md:p-3 rounded-xl max-w-[80%] flex flex-col ${
-                type === "translator" ? "md:flex-row" : "md:flex-col"
-              } items-start gap-2`}
+              className={`border p-2 md:p-3 rounded-xl max-w-[80%] flex flex-col items-start gap-1`}
             >
               <span className="text-gray-400 text-sm">
                 {type === "translator" ? "Translation:" : "Summary:"}
