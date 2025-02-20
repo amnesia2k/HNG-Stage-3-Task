@@ -8,6 +8,14 @@ export function useSummarizer() {
   React.useEffect(() => {
     const initializeSummarizer = async () => {
       try {
+        // Check if APIs are supported
+        if (!(
+          "ai" in self &&
+          "summarizer" in self.ai
+        )) {
+          throw new Error("Summarization APIs are not supported on this browser");
+        }
+
         // Mock initialization for development
         const mockSummarizer = {
           summarize: async (text) => {

@@ -14,7 +14,19 @@ export function TranslatorPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!inputMessage.trim()) return;
+    const trimmedMessage = inputMessage.trim();
+    if (!trimmedMessage) {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          text: "",
+          detectedLanguage: "",
+          isLoading: false,
+          error: "Please enter some text to translate",
+        },
+      ]);
+      return;
+    }
 
     const newMessage = {
       text: inputMessage,
@@ -49,7 +61,9 @@ export function TranslatorPage() {
             ? {
                 ...msg,
                 isLoading: false,
-                error: err.message || "Translation failed",
+                error:
+                  err.message ||
+                  "Failed to translate text. Please try again later.",
               }
             : msg
         )
@@ -77,7 +91,7 @@ export function TranslatorPage() {
             What are we translating today?
           </div>
 
-          <div className="w-full max-w-3xl px-4">
+          <div className="w-full max-w-3xl">
             <form onSubmit={handleSubmit}>
               <div className="flex items-center gap-2 p-2 border rounded-full bg-background">
                 <LanguageSelector

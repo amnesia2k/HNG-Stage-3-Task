@@ -24,6 +24,7 @@ export function LanguageSelector({ selectedLanguage, onLanguageChange }) {
           <SelectItem value="es">Spanish</SelectItem>
           <SelectItem value="fr">French</SelectItem>
           <SelectItem value="pt">Portuguese</SelectItem>
+          <SelectItem value="ru">Russian</SelectItem>
           <SelectItem value="zh">Mandarin Chinese</SelectItem>
           <SelectItem value="ja">Japanese</SelectItem>
           <SelectItem value="tr">Turkish</SelectItem>

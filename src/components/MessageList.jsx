@@ -22,8 +22,8 @@ export function MessageList({ messages, type }) {
       {messages.map((message, index) => (
         <div key={index} className="flex flex-col space-y-4">
           <div className="flex justify-end">
-            <div className="bg-[#303030] p-2 md:p-3 rounded-xl max-w-[80%] flex flex-col-reverse md:flex-row items-start md:items-center gap-2">
-              <span className="text-white">{message.text}</span>
+            <div className="bg-[#303030] p-2 md:p-3 rounded-xl max-w-[80%] flex flex-col md:flex-row items-start md:items-center">
+              <span className="text-white text-sm">{message.text}</span>
               <span className="text-gray-400 text-sm">
                 {type === "translator" &&
                   (!message.detectedLanguage ? (
@@ -31,7 +31,9 @@ export function MessageList({ messages, type }) {
                       <Loader className="h-4 w-4 animate-spin text-gray-400" />
                     </div>
                   ) : (
-                    `(${message.detectedLanguage})`
+                    <span className="text-sm">
+                      Detected Language: ({message.detectedLanguage})
+                    </span>
                   ))}
               </span>
             </div>
@@ -56,9 +58,11 @@ export function MessageList({ messages, type }) {
                   </span>
                 </div>
               ) : message.error ? (
-                <span className="text-red-400">{message.error}</span>
+                <span className="text-red-400 text-sm">{message.error}</span>
               ) : (
-                <span className="text-white">{message.translation}</span>
+                <span className="text-white text-sm">
+                  {message.translation}
+                </span>
               )}
             </div>
           </div>

@@ -12,7 +12,19 @@ export function SummarizerPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!inputMessage.trim()) return;
+    const trimmedMessage = inputMessage.trim();
+    if (!trimmedMessage) {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          text: "",
+          detectedLanguage: "en",
+          isLoading: false,
+          error: "Please enter some text to summarize",
+        },
+      ]);
+      return;
+    }
 
     const newMessage = {
       text: inputMessage,
@@ -47,7 +59,7 @@ export function SummarizerPage() {
             ? {
                 ...msg,
                 isLoading: false,
-                error: err.message || "Summarization failed",
+                error: err.message || "Failed to summarize text. Please try again later.",
               }
             : msg
         )
