@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Loader } from "lucide-react";
+import { Loader, Bot, User } from "lucide-react";
 import * as React from "react";
 
 export function MessageList({ messages, type }) {
@@ -21,8 +21,8 @@ export function MessageList({ messages, type }) {
     <div className="flex-1 space-y-6 overflow-y-auto">
       {messages.map((message, index) => (
         <div key={index} className="flex flex-col gap-1 space-y-4">
-          <div className="flex justify-end">
-            <div className="bg-[#303030] p-2 md:p-3 rounded-xl max-w-[80%] flex flex-col items-start md:items-center">
+          <div className="flex justify-end items-start gap-2">
+            <div className="bg-[#303030] p-2 md:p-3 rounded-xl max-w-[80%] flex flex-col items-start">
               <span className="text-white text-sm">{message.text}</span>
               <span className="text-gray-400 text-sm">
                 {type === "translator" &&
@@ -37,9 +37,15 @@ export function MessageList({ messages, type }) {
                   ))}
               </span>
             </div>
+            <div className="flex-shrink-0 p-2 bg-[#303030] rounded-full">
+              <User className="h-5 w-5 text-white" />
+            </div>
           </div>
 
-          <div className="flex justify-start">
+          <div className="flex justify-start items-start gap-2">
+            <div className="flex-shrink-0 p-2 bg-[#303030] rounded-full">
+              <Bot className="h-5 w-5 text-white" />
+            </div>
             <div
               className={`border p-2 md:p-3 rounded-xl max-w-[80%] flex flex-col items-start gap-1`}
             >
