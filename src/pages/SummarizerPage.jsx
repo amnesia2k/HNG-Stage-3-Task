@@ -77,7 +77,7 @@ export function SummarizerPage() {
 
           <div className="w-full max-w-3xl px-4">
             <form onSubmit={handleSubmit}>
-              <div className="flex items-center gap-2 px-2 pb-2 border rounded-lg bg-background">
+              <div className="flex items-center gap-2 px-2 border rounded-lg bg-background">
                 <Textarea
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
