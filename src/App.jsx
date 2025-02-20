@@ -16,10 +16,40 @@ export default function App() {
     e.preventDefault();
     if (!inputMessage.trim()) return;
 
-    const result = await translateText(inputMessage);
-    if (result) {
-      setMessages([...messages, result]);
-      setInputMessage("");
+    const newMessage = {
+      text: inputMessage,
+      detectedLanguage: '',
+      isLoading: true
+    };
+
+    setMessages([...messages, newMessage]);
+    setInputMessage("");
+
+    try {
+      const result = await translateText(inputMessage);
+      if (result) {
+        // Add a minimum delay of 1 second for better UX
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        setMessages(prevMessages => 
+          prevMessages.map((msg, idx) => 
+            idx === prevMessages.length - 1 ? {
+              ...result,
+              isLoading: false
+            } : msg
+          )
+        );
+      }
+    } catch (err) {
+      setMessages(prevMessages => 
+        prevMessages.map((msg, idx) => 
+          idx === prevMessages.length - 1 ? {
+            ...msg,
+            isLoading: false,
+            error: err.message || 'Translation failed'
+          } : msg
+        )
+      );
     }
   };
 

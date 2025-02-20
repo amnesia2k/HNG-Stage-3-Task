@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { Loader } from "lucide-react";
 
 export function MessageList({ messages }) {
   if (!messages.length) {
@@ -13,7 +14,14 @@ export function MessageList({ messages }) {
             <div className="bg-[#303030] px-4 py-2 rounded-full max-w-[80%] flex items-center gap-2">
               <span className="text-white">{message.text}</span>
               <span className="text-gray-400 text-sm">
-                ({message.detectedLanguage})
+                {!message.detectedLanguage ? (
+                  <div className="flex items-center gap-2">
+                    <Loader className="h-4 w-4 animate-spin text-gray-400" />
+                    {/* <span>Detecting...</span> */}
+                  </div>
+                ) : (
+                  `(${message.detectedLanguage})`
+                )}
               </span>
             </div>
           </div>
@@ -21,7 +29,16 @@ export function MessageList({ messages }) {
           <div className="flex justify-start">
             <div className="border px-4 py-2 rounded-full max-w-[80%] flex items-center gap-2">
               <span className="text-gray-400 text-sm">Translation:</span>
-              <span className="text-white">{message.translation}</span>
+              {message.isLoading ? (
+                <div className="flex items-center gap-2">
+                  <Loader className="h-4 w-4 animate-spin text-white" />
+                  <span className="text-gray-400">Translating...</span>
+                </div>
+              ) : message.error ? (
+                <span className="text-red-400">{message.error}</span>
+              ) : (
+                <span className="text-white">{message.translation}</span>
+              )}
             </div>
           </div>
         </div>
@@ -35,7 +52,9 @@ MessageList.propTypes = {
     PropTypes.shape({
       text: PropTypes.string.isRequired,
       detectedLanguage: PropTypes.string.isRequired,
-      translation: PropTypes.string.isRequired,
+      translation: PropTypes.string,
+      isLoading: PropTypes.bool,
+      error: PropTypes.string,
     })
   ).isRequired,
 };
